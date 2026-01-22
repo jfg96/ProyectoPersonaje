@@ -1,5 +1,8 @@
 import java.util.ArrayList;
 
+/**
+ * Gestiona la colección de objetos que posee un personaje.
+ */
 public class Inventario {
     private ArrayList<Item> listaItems;
 
@@ -7,36 +10,46 @@ public class Inventario {
         this.listaItems = new ArrayList<>();
     }
 
-    public void anadirItem(Item i) {
-        listaItems.add(i);
+    /**
+     * Añade un objeto al final del inventario.
+     * @param item El objeto a guardar.
+     */
+    public void anadirItem(Item item) {
+        listaItems.add(item);
     }
 
-
+    /**
+     * Muestra por consola el contenido numerado del inventario.
+     */
     public void mostrarContenido() {
         if (listaItems.isEmpty()) {
-            System.out.println("El inventario está vacío.");
+            System.out.println("   (Mochila vacía)");
         } else {
-            System.out.println("Contenido del inventario:");
+            System.out.println("   --- Mochila ---");
             for (int i = 0; i < listaItems.size(); i++) {
-                System.out.println((i + ". " + listaItems.get(i).toString()));
-
-
+                System.out.println("   " + i + ". " + listaItems.get(i).toString());
             }
+            System.out.println("   ---------------");
         }
     }
 
+    /**
+     * Intenta usar el objeto en la posición indicada sobre el personaje.
+     * Si el objeto reporta éxito (return true), se elimina de la lista.
+     * Si falla, permanece en el inventario.
+     * * @param indice Posición del objeto en la lista.
+     * @param objetivo Personaje que usa el objeto.
+     */
     public void usarYConsumir(int indice, Personaje objetivo) {
-
         if (indice >= 0 && indice < listaItems.size()) {
             Item item = listaItems.get(indice);
-            item.usarItem(objetivo);
-            if (item instanceof Pocion) {
-                listaItems.remove(indice); // Lo borramos de la lista
-                System.out.println("El objeto " + item.getNombre() + " se ha consumido.");
+            boolean exito = item.usarItem(objetivo);
+
+            if (exito) {
+                listaItems.remove(indice);
             }
         } else {
-            System.out.println("No hay ningún objeto en la posición " + indice);
+            System.out.println("   [!] No existe ningún objeto en la posición " + indice);
         }
     }
-
 }

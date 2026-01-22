@@ -1,46 +1,63 @@
+/**
+ * Subclase de Personaje especializada en el uso de magia.
+ * Utiliza 'Maná' como recurso para realizar ataques potentes.
+ *
+ * @author Javier Fernández Gavino
+ * @version 1.0
+ */
 public class Mago extends Personaje {
-    //Atributos
-    private int manaMax;
-    private int mana;
+    private double puntosMana;
+    private double puntosManaMax;
 
-    //Constructor
-    public Mago(String nombre, int nivel, double puntosVidaMax, int manaMax) {
-        super(nombre, nivel, puntosVidaMax);
-        setManaMax(manaMax);
-        this.mana = manaMax; // Inicialmente, el mana es máximo
+    /**
+     * Crea un Mago a nivel 1 con estadísticas base bajas pero capacidad mágica.
+     * @param nombre Nombre del mago.
+     */
+    public Mago(String nombre) {
+        super(nombre, 1, 80, 1); // Vida baja, defensa baja
+        this.puntosManaMax = 100;
+        this.puntosMana = 100;
     }
 
-    //Getters y Setters
-    public int getManaMax() {
-        return manaMax;
-    }
+    /**
+     * Restaura puntos de maná sin exceder el máximo.
+     * @param cantidad Cantidad de maná a recuperar.
+     */
+    public void recuperarMana(double cantidad) {
+        double manaAntes = this.puntosMana;
+        this.puntosMana += cantidad;
+        if (this.puntosMana > this.puntosManaMax) this.puntosMana = this.puntosManaMax;
 
-    public void setManaMax(int manaMax) {
-        this.manaMax = Math.max(50, Math.min(1000, manaMax));
-        if (this.mana > this.manaMax) {
-            this.mana = this.manaMax;
-        }
-    }
-
-    public int getMana() {
-        return mana;
-    }
-
-    public void setMana(int mana) {
-        this.mana = Math.max(0, Math.min(manaMax, mana));
+        System.out.println(getNombre() + " recupera " + (int)(this.puntosMana - manaAntes) + " maná.");
     }
 
     @Override
     public void atacar(Personaje objetivo) {
-        if (this.getMana() >= 20) {
-            double danioMagico = 30 + (5 * getNivel());
-            System.out.println(getNombre() + " lanza un hechizo mágico a " + objetivo.getNombre());
-            objetivo.recibirDanio(danioMagico);
-            System.out.println(getNombre() + " inflige " + danioMagico + " puntos de daño mágico a " + objetivo.getNombre() + ".");
-            // El Mago consume mana
-            this.setMana(mana - 20);
+        if (!this.estaVivo()) return;
+
+        if (puntosMana >= 10) {
+            int inteligencia = 35 + (5 * getNivel());
+            puntosMana -= 10;
+            System.out.println(getNombre() + " lanza una bola de fuego! (Maná restante: " + (int)puntosMana + ")");
+            objetivo.recibirDanio(inteligencia);
         } else {
-            System.out.println(getNombre() + " no tiene suficiente mana para atacar.");
+            System.out.println(getNombre() + " no tiene maná y golpea torpemente con su bastón.");
+            objetivo.recibirDanio(2 + getNivel());
         }
+    }
+
+    @Override
+    public void subirNivel() {
+        super.subirNivel();
+        this.puntosManaMax += 25;
+        this.puntosMana = this.puntosManaMax;
+        System.out.println("¡" + getNombre() + " aumenta su poder arcano! (+Maná)");
+    }
+
+    @Override
+    public void descansar() {
+        super.descansar(); // Recupera vida
+        this.puntosMana = this.puntosManaMax; // Recupera maná completamente
+        System.out.println("   [Mago]: Maná restaurado.");
     }
 }

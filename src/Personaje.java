@@ -1,22 +1,40 @@
+/**
+ * Clase base abstracta que representa a cualquier entidad viva del juego.
+ * Gestiona estadísticas comunes (vida, nivel, experiencia) e inventario.
+ */
 public abstract class Personaje {
-    // Atributos
     private String nombre;
     private int nivel;
     private double puntosVida;
     private double puntosVidaMax;
+    private int defensa;
     private Inventario inventario;
 
+    private int experiencia;
+    private int experienciaNecesaria;
 
-    // Constructor
-    public Personaje(String nombre, int nivel, double puntosVidaMax) {
+    /**
+     * Constructor base para inicializar un personaje.
+     *
+     * @param nombre        Nombre del personaje.
+     * @param nivel         Nivel inicial.
+     * @param puntosVidaMax Vida máxima inicial.
+     * @param defensa       Puntos de defensa (mitigación de daño).
+     */
+    public Personaje(String nombre, int nivel, double puntosVidaMax, int defensa) {
         this.nombre = nombre;
         setNivel(nivel);
-        setPuntosVidaMax(puntosVidaMax);
-        this.puntosVida = this.puntosVidaMax; // Inicialmente, los puntos de vida son máximos
+        this.puntosVidaMax = puntosVidaMax;
+        this.puntosVida = this.puntosVidaMax;
+        this.defensa = defensa;
+
         this.inventario = new Inventario();
+        this.experiencia = 0;
+        this.experienciaNecesaria = nivel * 100;
     }
 
-    //Getters y Setters
+    // --- Getters y Setters ---
+
     public String getNombre() {
         return nombre;
     }
@@ -31,7 +49,7 @@ public abstract class Personaje {
 
     public void setNivel(int nivel) {
         this.nivel = Math.max(1, Math.min(80, nivel));
-
+        this.experienciaNecesaria = this.nivel * 100;
     }
 
     public double getPuntosVida() {
@@ -47,17 +65,108 @@ public abstract class Personaje {
     }
 
     public void setPuntosVidaMax(double puntosVidaMax) {
-        this.puntosVidaMax = Math.max(50, Math.min(5000, puntosVidaMax));
-        if (this.puntosVida > this.puntosVidaMax) {
-            this.puntosVida = this.puntosVidaMax;
+        this.puntosVidaMax = Math.max(1, Math.min(10000, puntosVidaMax));
+        if (this.puntosVida > this.puntosVidaMax) this.puntosVida = this.puntosVidaMax;
+    }
+
+    public int getDefensa() {
+        return defensa;
+    }
+
+    public void setDefensa(int defensa) {
+        this.defensa = defensa;
+    }
+
+    public int getExperiencia() {
+        return experiencia;
+    }
+
+
+    // --- Métodos Abstractos ---
+
+    /**
+     * Realiza una acción de ataque contra otro personaje.
+     * Debe ser implementado por las subclases.
+     *
+     * @param objetivo El personaje que recibirá el ataque.
+     */
+    public abstract void atacar(Personaje objetivo);
+
+    // --- Métodos de Acción (Lógica del Juego) ---
+
+    /**
+     * Añade experiencia al personaje y comprueba si sube de nivel.
+     *
+     * @param cantidad Cantidad de XP ganada.
+     */
+    public void ganarExperiencia(int cantidad) {
+        this.experiencia += cantidad;
+        System.out.println(this.nombre + " obtiene " + cantidad + " XP.");
+        while (this.experiencia >= this.experienciaNecesaria) {
+            this.experiencia -= this.experienciaNecesaria;
+            subirNivel();
         }
     }
 
-    public abstract void atacar(Personaje objetivo);
+    /**
+     * Aumenta el nivel del personaje y recalcula la experiencia necesaria.
+     * Las subclases deben sobrescribir esto para mejorar sus estadísticas.
+     */
+    public void subirNivel() {
+        setNivel(this.nivel + 1);
+        System.out.println("\n*** ¡" + nombre.toUpperCase() + " SUBE AL NIVEL " + nivel + "! ***");
+    }
 
+    /**
+     * Recupera un porcentaje de vida (30%) descansando.
+     */
+    public void descansar() {
+        double vidaRecuperada = this.puntosVidaMax * 0.30;
+        double vidaAntes = this.puntosVida;
+        setPuntosVida(this.puntosVida + vidaRecuperada);
+        System.out.println(nombre + " descansa y recupera " + (int) (this.puntosVida - vidaAntes) + " PV.");
+    }
+
+    public void moverse() {
+        System.out.println(nombre + " avanza hacia la siguiente zona...");
+    }
+
+    /**
+     * Verifica si el personaje sigue vivo.
+     *
+     * @return true si la vida es mayor que 0.
+     */
+    public boolean estaVivo() {
+        return this.puntosVida > 0;
+    }
+
+    /**
+     * Calcula y aplica daño reduciéndolo según la defensa del personaje.
+     *
+     * @param danio Cantidad de daño bruto recibido.
+     */
+    public void recibirDanio(double danio) {
+        double danioReal = danio - defensa;
+        if (danioReal < 0) danioReal = 0;
+
+        setPuntosVida(puntosVida - danioReal);
+        System.out.println(nombre + " recibe " + (int) danioReal + " de daño (Mitigado: " + defensa + "). [Vida: " + (int) puntosVida + "/" + (int) puntosVidaMax + "]");
+    }
+
+    // --- Gestión de Inventario ---
+
+    /**
+     * Añade un objeto al inventario.
+     * Protegido contra valores null para evitar errores si un enemigo no suelta botín.
+     *
+     * @param item El objeto a recoger.
+     */
     public void recogerItem(Item item) {
+        if (item == null) {
+            return; // No hace nada si no hay objeto
+        }
         inventario.anadirItem(item);
-        System.out.println(nombre + " ha recogido el item: " + item.getNombre());
+        System.out.println(nombre + " guardó " + item.getNombre() + ".");
     }
 
     public void usarObjetoDeMochila(int indice) {
@@ -65,22 +174,8 @@ public abstract class Personaje {
     }
 
     public void mostrarInventario() {
-        System.out.println("Inventario de " + nombre + ":");
         inventario.mostrarContenido();
     }
 
-    public void recibirDanio(double danio) {
-        setPuntosVida(puntosVida - danio);
-        System.out.println(nombre + " ha recibido " + danio + " puntos de daño. Puntos de vida restantes: " + puntosVida);
-    }
 
-    @Override
-    public String toString() {
-        return "Personaje{" +
-                "nombre='" + nombre + '\'' +
-                ", nivel=" + nivel +
-                ", puntosVida=" + puntosVida +
-                ", puntosVidaMax=" + puntosVidaMax +
-                '}';
-    }
 }

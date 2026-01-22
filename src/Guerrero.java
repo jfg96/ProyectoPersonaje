@@ -1,14 +1,23 @@
+/**
+ * Clase especializada en fuerza y defensa física.
+ * Utiliza un arma principal para maximizar su daño.
+ *
+ * @author Javier Fernández Gavino
+ * @version 1.0
+ */
 public class Guerrero extends Personaje {
-    //Atributos
     private Arma arma;
 
-    //Constructor
-    public Guerrero(String nombre, int nivel, double puntosVidaMax, Arma arma) {
-        super(nombre, nivel, puntosVidaMax);
+    /**
+     * Crea un guerrero. Comienza siempre a nivel 1.
+     * @param nombre Nombre del personaje.
+     * @param arma Arma inicial.
+     */
+    public Guerrero(String nombre, Arma arma) {
+        super(nombre, 1, 100, 5);
         this.arma = arma;
     }
 
-    //Getters y Setters
     public Arma getArma() {
         return arma;
     }
@@ -19,10 +28,27 @@ public class Guerrero extends Personaje {
 
     @Override
     public void atacar(Personaje objetivo) {
-        double danioTotal = ((arma != null) ? arma.getDanioExtra() : 0) + (4 * getNivel());
+        if (!this.estaVivo()) return;
 
-        System.out.println(getNombre() + " golpea a " + objetivo.getNombre() + " con su "
-                + (arma != null ? arma.getNombre() : "fuerza bruta") + " causando un impacto brutal.");
+        int fuerza = 15 + (3 * getNivel());
+        int danioTotal = fuerza;
+
+        if (this.arma != null) {
+            danioTotal += this.arma.getDanioExtra();
+            System.out.println(getNombre() + " ataca con " + arma.getNombre() + ".");
+        } else {
+            System.out.println(getNombre() + " golpea con los puños.");
+        }
         objetivo.recibirDanio(danioTotal);
+    }
+
+    @Override
+    public void subirNivel() {
+        super.subirNivel();
+        // El guerrero escala mejor en vida (+25) y defensa (+2)
+        setPuntosVidaMax(getPuntosVidaMax() + 25);
+        setPuntosVida(getPuntosVidaMax());
+        setDefensa(getDefensa() + 2);
+        System.out.println("¡" + getNombre() + " se siente más resistente! (+Vida, +Defensa)");
     }
 }
