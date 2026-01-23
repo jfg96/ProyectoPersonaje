@@ -49,6 +49,8 @@ public class Mago extends Personaje {
     @Override
     public void subirNivel() {
         super.subirNivel();
+        setPuntosVidaMax(getPuntosVidaMax() + 10);
+        setPuntosVida(getPuntosVidaMax());
         this.puntosManaMax += 25;
         this.puntosMana = this.puntosManaMax;
         System.out.println("¡" + getNombre() + " aumenta su poder arcano! (+Maná)");

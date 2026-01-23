@@ -1,6 +1,9 @@
     /**
      * Clase base abstracta que representa a cualquier entidad viva del juego.
      * Gestiona estadísticas comunes (vida, nivel, experiencia) e inventario.
+     *
+     * @author Javier Fernández Gavino
+     * @version 1.0
      */
     public abstract class Personaje {
         private String nombre;
@@ -9,7 +12,6 @@
         private double puntosVidaMax;
         private int defensa;
         private Inventario inventario;
-
         private int experiencia;
         private int experienciaNecesaria;
 
@@ -27,7 +29,6 @@
             this.puntosVidaMax = puntosVidaMax;
             this.puntosVida = this.puntosVidaMax;
             this.defensa = defensa;
-
             this.inventario = new Inventario();
             this.experiencia = 0;
             this.experienciaNecesaria = nivel * 100;
