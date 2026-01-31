@@ -3,13 +3,13 @@
  * Integra la generación de enemigos.
  *
  * @author Rafa Navarro
- * @since 2026.01.23
  * @version 1.1
+ * @since 2026.01.23
  */
 public class Sala {
 
     /**
-     * Tipo de efecto ambiental (CAMBIADO A ENUM).
+     * Tipo de efecto ambiental.
      */
     private TipoSala tipo;
     /**
@@ -17,7 +17,7 @@ public class Sala {
      */
     private String descripcion;
     /**
-     * Dificultad de la sala (CAMBIADO A ENUM).
+     * Dificultad de la sala.
      */
     private Dificultad dificultad;
     /**
@@ -137,6 +137,7 @@ public class Sala {
 
     /**
      * Getters de la sala.
+     *
      * @return Atributos de la sala.
      */
     public TipoSala getTipo() {
