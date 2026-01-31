@@ -1,0 +1,3 @@
+public enum EstadoMision {
+    DISPONIBLE, EN_CURSO, COMPLETADA, RECOMPENSA_ENTREGADA
+}

@@ -1,89 +1,87 @@
-/**
- * Main desactualizado, no funciona actualmente.
- */
-
-
-import java.util.ArrayList;
-import java.util.Scanner;
-
 public class Main {
+
     public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
+        System.out.println("=== INICIO DE LAS PRUEBAS PERSONAJES ===\n");
 
+        // 1. CREACIÓN DE PERSONAJES
+        System.out.println("--- 1. Creando Héroes y Enemigos ---");
+        Arma espadaOxidada = new Arma("Espada Oxidada", 5);
+        Guerrero conan = new Guerrero("Conan", espadaOxidada);
+        Mago merlin = new Mago("Merlín");
 
-        Arma espadaMaestra = new Arma("Espada Maestra", 25.0);
-        Arma dagaCristal = new Arma("Daga de Cristal", 12.0);
-        Arma colmilloVeneno = new Arma("Colmillo de Veneno", 10.5);
-        Pocion pocionVida = new Pocion("Poción de Vida", 50.0);
+        // Creamos un enemigo de nivel 2
+        Personaje trasgo = new Enemigo("Trasgo Feo", 2);
 
+        System.out.println("Héroe creado: " + conan.getNombre() + " (HP: " + conan.getPuntosVida() + ")");
+        System.out.println("Héroe creado: " + merlin.getNombre() + " (Mana: 100)");
+        System.out.println("Enemigo aparece: " + trasgo.getNombre() + " (HP: " + trasgo.getPuntosVida() + ")\n");
 
-        Personaje link = new Guerrero("Link", 10, 200, espadaMaestra);
-        Personaje gandalf = new Mago("Gandalf", 15, 150, 100);
-        Personaje ezio = new Picaro("Ezio", 12, 180, 50, dagaCristal, colmilloVeneno);
-        Personaje paquete = new Mago("Paquete", 2, 2, 2);
+        // 2. PRUEBA DE COMBATE Y POLIMORFISMO
+        System.out.println("--- 2. Prueba de Combate (Polimorfismo) ---");
+        // El guerrero ataca (usa fuerza + arma)
+        conan.atacar(trasgo);
 
+        // El mago ataca (usa maná + inteligencia)
+        merlin.atacar(trasgo);
 
-        Guerrero sacoEntrenamiento = new Guerrero("Saco de Boxeo", 1, 1000, null);
-
-
-        ArrayList<Personaje> equipo = new ArrayList<>();
-        equipo.add(link);
-        equipo.add(gandalf);
-        equipo.add(ezio);
-        equipo.add(paquete);
-
-        System.out.println("=== DEMOSTRACIÓN DE ATAQUES (Fase 4) ===");
-        for (Personaje p : equipo) {
-            p.atacar(sacoEntrenamiento);
+        // El enemigo contraataca (IA básica)
+        if (trasgo.estaVivo()) {
+            trasgo.atacar(conan);
         }
+        System.out.println("");
 
+        // 3. PRUEBA DE INVENTARIO Y OBJETOS
+        System.out.println("--- 3. Gestión de Inventario y Loot ---");
+        // Simulamos que encontramos una poción en el suelo
+        Pocion pocionVida = new Pocion("Poción Roja", 50, TipoPocion.VIDA);
 
-        System.out.println("\n=== GESTIÓN DE OBJETOS CON EZIO ===");
-        ezio.setPuntosVida(40);
-        ezio.recogerItem(pocionVida);
-        ezio.recogerItem(new Arma("Bomba de Humo", 5.0));
-        ezio.mostrarInventario();
+        // Conan la recoge
+        conan.recogerItem(pocionVida);
+        conan.mostrarInventario();
 
-        System.out.println("\n--- Ezio usa el objeto de la posición 0 ---");
-        ezio.usarObjetoDeMochila(0);
+        // Conan recibe daño para probar la curación
+        System.out.println(conan.getNombre() + " se tropieza y pierde vida...");
+        conan.setPuntosVida(10); // Le bajamos la vida artificialmente
+        System.out.println("Vida actual: " + conan.getPuntosVida());
 
+        // Usamos la poción (está en el índice 0 del inventario)
+        System.out.println("Usando objeto del inventario...");
+        conan.usarObjetoDeMochila(0);
+        System.out.println("Vida después de poción: " + conan.getPuntosVida());
+        conan.mostrarInventario(); // Debería estar vacío
+        System.out.println("");
 
-        System.out.println("\n=== ¡BIENVENIDO A LA ARENA DE COMBATE! ===");
-        System.out.println("Personajes disponibles:");
-        for (int i = 0; i < equipo.size(); i++) {
-            System.out.println(i + ". " + equipo.get(i).getNombre());
-        }
+        // 4. PRUEBA DE EQUIPAMIENTO (LOGICA DE CLASE)
+        System.out.println("--- 4. Restricciones de Clase (Armas) ---");
+        Arma baculo = new Arma("Bastón Supremo", 20);
 
-        System.out.print("\nElige el número del luchador 1: ");
-        int p1 = sc.nextInt();
-        System.out.print("Elige el número del luchador 2: ");
-        int p2 = sc.nextInt();
+        // El mago intenta equiparlo (Fallará porque Arma dice que Mago no puede, o no tiene lógica específica y devuelve false)
+        // Nota: Según tu código, Mago devuelve false en Arma.java.
+        System.out.println("Merlín intenta equipar un arma física:");
+        merlin.recogerItem(baculo);
+        merlin.usarObjetoDeMochila(0); // Intentar equipar
 
-        Personaje luchador1 = equipo.get(p1);
-        Personaje luchador2 = equipo.get(p2);
+        // El guerrero encuentra una espada mejor
+        Arma excalibur = new Arma("Excalibur", 50);
+        System.out.println("\nConan encuentra " + excalibur.getNombre());
+        conan.recogerItem(excalibur);
+        // Al usarla, debería equiparse Excalibur y guardar la Espada Oxidada en la mochila
+        conan.usarObjetoDeMochila(0);
+        System.out.println("Arma actual de Conan: " + conan.getArma().getNombre());
+        System.out.println("Inventario de Conan (debería tener la vieja):");
+        conan.mostrarInventario();
+        System.out.println("");
 
-        System.out.println("\n--- COMIENZA EL DUELO: " + luchador1.getNombre() + " VS " + luchador2.getNombre() + " ---");
+        // 5. PRUEBA DE EXPERIENCIA Y LEVEL UP
+        System.out.println("--- 5. Subida de Nivel ---");
+        // Le damos XP suficiente para subir
+        System.out.println("Conan mata al Dragón (Cheat de XP)...");
+        conan.ganarExperiencia(200); // Necesita 100 para nivel 2
 
-        while (luchador1.getPuntosVida() > 0 && luchador2.getPuntosVida() > 0) {
-            luchador1.atacar(luchador2);
-            if (luchador2.getPuntosVida() > 0) {
-                luchador2.atacar(luchador1);
-            }
-        }
+        System.out.println("Nivel actual: " + conan.getNivel());
+        System.out.println("Vida Máxima (aumentada): " + conan.getPuntosVidaMax());
+        System.out.println("Defensa (aumentada): " + conan.getDefensa());
 
-
-        double vidaMaxima = Math.max(luchador1.getPuntosVida(), luchador2.getPuntosVida());
-
-        System.out.println("\n============================================");
-        if (vidaMaxima <= 0) {
-            System.out.println("¡EMPATE FATAL! Nadie sobrevivió.");
-        } else {
-
-            String nombreGanador = (vidaMaxima == luchador1.getPuntosVida()) ? luchador1.getNombre() : luchador2.getNombre();
-            System.out.println("¡EL GANADOR ES: " + nombreGanador.toUpperCase() + " con " + vidaMaxima + " PV!");
-        }
-        System.out.println("============================================");
-
-        sc.close(); 
+        System.out.println("\n=== PRUEBAS FINALIZADAS CON ÉXITO ===");
     }
 }

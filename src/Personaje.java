@@ -83,8 +83,6 @@
         }
 
 
-        // --- Métodos Abstractos ---
-
         /**
          * Realiza una acción de ataque contra otro personaje.
          * Debe ser implementado por las subclases.

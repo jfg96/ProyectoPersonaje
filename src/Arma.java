@@ -3,7 +3,7 @@
  * Gestiona la lógica de equipamiento según la clase del personaje (Guerrero, Pícaro, Mago).
  *
  * @author Javier Fernández Gavino
- * @version 2.0 (JDK 25 Edition)
+ * @version 2.0
  */
 public class Arma extends Item {
     private double danioExtra;
