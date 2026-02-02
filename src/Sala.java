@@ -100,7 +100,7 @@ public class Sala {
              * 20% Orco, 50% Espectro, 30% Jefe
              */
             if (probabilidad < 0.30) return new Enemigo("SEÑOR DE LAS SOMBRAS (JEFE)", nivelSugerido + 3);
-            if (probabilidad < 0.80) return new Enemigo("Espectro de Élite", nivelSugerido + 2);
+            if (probabilidad < 0.80) return new Enemigo("Caballero Corrupto", nivelSugerido + 2);
             return new Enemigo("Orco Berserker", nivelSugerido + 1);
         }
     }

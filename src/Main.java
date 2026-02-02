@@ -5,12 +5,11 @@
 public class Main {
 
     public static void main(String[] args) {
-        // 1. Obtenemos la única instancia del juego (Patrón Singleton)
+        // 1. Obtenemos la única instancia del juego
         Juego partida = Juego.getInstancia();
 
-        // 2. Iniciamos el motor del juego
+        // 2. Iniciamos el juego
         partida.iniciarJuego();
 
-        // Cuando el método iniciarJuego() termina, el programa finaliza.
     }
 }

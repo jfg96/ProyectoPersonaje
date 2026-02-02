@@ -17,8 +17,6 @@ import java.util.Scanner;
  */
 public class Juego {
 
-    // --- PATRÓN SINGLETON ---
-
     /**
      * Variable estática que almacena la única instancia posible de la clase Juego.
      * Se inicializa en null y se crea solo cuando se llama a getInstancia().
@@ -131,9 +129,14 @@ public class Juego {
      * Valida que la entrada sea correcta.
      */
     private void crearPersonaje() {
-        System.out.println("¿Cuál es tu nombre, viajero?");
-        System.out.print("> ");
-        String nombre = sc.nextLine();
+        String nombre;
+        do{
+            System.out.println("¿Cuál es tu nombre, viajero?");
+            System.out.print("> ");
+            nombre = sc.nextLine();
+
+        }while(nombre.isEmpty());
+
         boolean opcionValida = false;
 
         // Bucle para asegurar que el usuario elija una opción válida
@@ -149,7 +152,7 @@ public class Juego {
 
                 switch (opcion) {
                     case 1:
-                        this.jugador = new Guerrero(nombre, new Arma("Espada Bastarda", 5));
+                        this.jugador = new Guerrero(nombre, new Arma("Espada de Madera", 8));
                         opcionValida = true;
                         break;
                     case 2:
@@ -157,7 +160,7 @@ public class Juego {
                         opcionValida = true;
                         break;
                     case 3:
-                        this.jugador = new Picaro(nombre, new Arma("Daga Oxidada", 4), new Arma("Daga Oxidada", 4));
+                        this.jugador = new Picaro(nombre, new Arma("Daga Lamentable", 4), new Arma("Daga Oxidada", 4));
                         opcionValida = true;
                         break;
                     default:
@@ -382,7 +385,7 @@ public class Juego {
 
             case 2:
                 System.out.println(salaActual.getDescripcion());
-                Enemigo obj2 = new Enemigo("Espectro Doliente", 2);
+                Enemigo obj2 = new Enemigo("Espectro Acechador", 2);
                 MisionCaza m2 = new MisionCaza("Exorcismo", "Libera las almas de 2 Espectros.",
                         2, obj2, 100, new Pocion("Elixir Mayor", 100, TipoPocion.VIDA), salaActual);
                 gestorMisiones.asignarMision(m2);

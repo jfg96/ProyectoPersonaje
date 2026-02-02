@@ -14,7 +14,6 @@ public class Picaro extends Personaje {
     /**
      * Crea un Pícaro.
      * @param nombre Nombre del personaje.
-     * @param energiaMaxima Energía inicial.
      * @param arma1 Arma de mano derecha (puede ser null).
      * @param arma2 Arma de mano izquierda (puede ser null).
      */
@@ -23,7 +22,7 @@ public class Picaro extends Personaje {
         this.arma1 = arma1;
         this.arma2 = arma2;
         this.energiaMaxima = 50;
-        this.energia = energiaMaxima;
+        this.energia = this.energiaMaxima;
     }
 
     // --- Getters y Setters Específicos ---

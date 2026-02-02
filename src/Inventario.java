@@ -2,6 +2,8 @@ import java.util.ArrayList;
 
 /**
  * Gestiona la colección de objetos que posee un personaje.
+ * @author Javier Fernández Gavino
+ * @version 1.0
  */
 public class Inventario {
     private ArrayList<Item> listaItems;
