@@ -50,6 +50,11 @@ public class Arma extends Item {
 
     // --- MÉTODOS PRIVADOS DE LÓGICA ESPECÍFICA ---
 
+    /**
+     * Lógica para equipar un arma en un Pícaro.
+     * @param p El pícaro que intenta equiparse el arma.
+     * @return true si se equipó correctamente; false si no.
+     */
     private boolean equiparPicaro(Picaro p) {
         if (p.getArma1() == null) {
             p.setArma1(this);
@@ -68,6 +73,11 @@ public class Arma extends Item {
         }
     }
 
+    /**
+     * Lógica para equipar un arma en un Guerrero.
+     * @param g El guerrero que intenta equiparse el arma.
+     * @return true si se equipó correctamente; false si no.
+     */
     private boolean equiparGuerrero(Guerrero g) {
         if (g.getArma() != null) {
             System.out.println("   (Guardando " + g.getArma().getNombre() + " en la mochila...)");
@@ -77,12 +87,20 @@ public class Arma extends Item {
         System.out.println(g.getNombre() + " se equipa " + getNombre() + ".");
         return true;
     }
-
+    /**
+     * Lógica para equipar un arma en un Mago.
+     * @param m El mago que intenta equiparse el arma.
+     * @return false siempre, ya que los magos no pueden usar armas.
+     */
     private boolean equiparMago(Mago m) {
         System.out.println(m.getNombre() + " no tiene fuerza para usar " + getNombre() + ".");
         return false;
     }
 
+    /**
+     * Representación en cadena del arma.
+     * @return Cadena con el nombre del arma y su bonificación de daño.
+     */
     @Override
     public String toString() {
         return getNombre() + " [ATQ +" + (int) danioExtra + "]";

@@ -6,6 +6,9 @@
  * @version 1.0
  */
 public class Guerrero extends Personaje {
+    /**
+     * Arma principal del guerrero.
+     */
     private Arma arma;
 
     /**
@@ -18,14 +21,26 @@ public class Guerrero extends Personaje {
         this.arma = arma;
     }
 
+    /**
+     * Obtiene el arma equipada por el guerrero.
+     * @return El arma del guerrero.
+     */
     public Arma getArma() {
         return arma;
     }
 
+    /**
+     * Equipa un arma al guerrero.
+     * @param arma El arma a equipar.
+     */
     public void setArma(Arma arma) {
         this.arma = arma;
     }
 
+    /**
+     * Ataca a otro personaje, infligiendo daño basado en su fuerza y el arma equipada.
+     * @param objetivo El personaje que recibirá el ataque.
+     */
     @Override
     public void atacar(Personaje objetivo) {
         if (!this.estaVivo()) return;
@@ -42,6 +57,10 @@ public class Guerrero extends Personaje {
         objetivo.recibirDanio(danioTotal);
     }
 
+    /**
+     * Sube de nivel, mejorando las estadísticas del guerrero.
+     * Gana más vida y defensa que otras clases.
+     */
     @Override
     public void subirNivel() {
         super.subirNivel();

@@ -6,7 +6,14 @@
  * @version 1.1
  */
 public class Pocion extends Item {
+    /**
+     * Cantidad de puntos que restaura la poción.
+     */
     private double cantidad;
+
+    /**
+     * Tipo de poción (VIDA o MANA).
+     */
     private TipoPocion tipo; // VIDA o MANA
 
     /**
@@ -50,6 +57,10 @@ public class Pocion extends Item {
         }
     }
 
+    /**
+     * Representación en cadena de la poción.
+     * @return Nombre y efecto de la poción.
+     */
     @Override
     public String toString() {
         return getNombre() + " (+" + (int) cantidad + " " + tipo + ")";

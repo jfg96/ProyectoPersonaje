@@ -6,7 +6,14 @@
  * @version 1.0
  */
 public class Mago extends Personaje {
+    /**
+     * Puntos de maná actuales del mago.
+     */
     private double puntosMana;
+
+    /**
+     * Puntos de maná máximos del mago.
+     */
     private double puntosManaMax;
 
     /**
@@ -18,11 +25,21 @@ public class Mago extends Personaje {
         this.puntosManaMax = 100;
         this.puntosMana = 100;
     }
+
+    /**
+     * Obtiene los puntos de maná actuales.
+     * @return Puntos de maná.
+     */
     public double getPuntosMana() { return puntosMana; }
 
+    /**
+     * Establece los puntos de maná actuales, asegurando que no excedan el máximo ni sean negativos.
+     * @param puntosMana Nuevos puntos de maná.
+     */
     public void setPuntosMana(double puntosMana) {
         this.puntosMana = Math.max(0, Math.min(puntosManaMax, puntosMana));
     }
+
     /**
      * Restaura puntos de maná sin exceder el máximo.
      * @param cantidad Cantidad de maná a recuperar.
@@ -35,6 +52,11 @@ public class Mago extends Personaje {
         System.out.println(getNombre() + " recupera " + (int)(this.puntosMana - manaAntes) + " maná.");
     }
 
+    /**
+     * Ataque especial del mago que consume maná para infligir daño.
+     * Si no hay suficiente maná, realiza un ataque débil.
+     * @param objetivo El personaje que recibe el ataque.
+     */
     @Override
     public void atacar(Personaje objetivo) {
         if (!this.estaVivo()) return;
@@ -50,6 +72,9 @@ public class Mago extends Personaje {
         }
     }
 
+    /**
+     * Sube de nivel al mago, aumentando su vida y maná máximos.
+     */
     @Override
     public void subirNivel() {
         super.subirNivel();
@@ -60,6 +85,9 @@ public class Mago extends Personaje {
         System.out.println("¡" + getNombre() + " aumenta su poder arcano! (+Maná)");
     }
 
+    /**
+     * Descansa para recuperar vida y maná completamente.
+     */
     @Override
     public void descansar() {
         super.descansar(); // Recupera vida

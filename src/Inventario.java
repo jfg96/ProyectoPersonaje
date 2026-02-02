@@ -6,8 +6,14 @@ import java.util.ArrayList;
  * @version 1.0
  */
 public class Inventario {
+    /**
+     * Lista de objetos en el inventario.
+     */
     private ArrayList<Item> listaItems;
 
+    /**
+     * Crea un inventario vacío.
+     */
     public Inventario() {
         this.listaItems = new ArrayList<>();
     }

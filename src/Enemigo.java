@@ -6,7 +6,10 @@
  * @version 1.1
  */
 public class Enemigo extends Personaje {
+    /** Recompensa de experiencia al derrotar al enemigo. */
     private double experienciaRecompensa;
+
+    /** Daño base del enemigo. */
     private double danioBase;
 
     /**
@@ -20,6 +23,10 @@ public class Enemigo extends Personaje {
         this.experienciaRecompensa = 20 * nivel;
     }
 
+    /**
+     * Obtiene la experiencia que se recompensa al derrotar al enemigo.
+     * @return La experiencia otorgada.
+     */
     public double getExperienciaRecompensa() {
         return experienciaRecompensa;
     }
@@ -52,6 +59,12 @@ public class Enemigo extends Personaje {
         return null;
     }
 
+    /**
+     * El enemigo ataca a un personaje objetivo.
+     * Hay un 85% de probabilidad de acertar el ataque.
+     * El daño infligido varía ligeramente para añadir dinamismo.
+     * @param objetivo El personaje que recibe el ataque.
+     */
     @Override
     public void atacar(Personaje objetivo) {
         if (Math.random() < 0.85) {

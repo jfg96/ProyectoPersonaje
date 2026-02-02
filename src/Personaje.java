@@ -6,13 +6,42 @@
      * @version 1.0
      */
     public abstract class Personaje {
+        /**
+         * Nombre del personaje.
+         */
         private String nombre;
+        /**
+         * Nivel del personaje.
+         */
         private int nivel;
+        /**
+         * Puntos de vida actuales.
+         */
         private double puntosVida;
+
+        /**
+         * Puntos de vida máximos.
+         */
         private double puntosVidaMax;
+
+        /**
+         * Puntos de defensa (mitigación de daño).
+         */
         private int defensa;
+
+        /**
+         * Inventario del personaje.
+         */
         private Inventario inventario;
+
+        /**
+         * Experiencia acumulada.
+         */
         private int experiencia;
+
+        /**
+         * Experiencia necesaria para subir al siguiente nivel.
+         */
         private int experienciaNecesaria;
 
         /**
@@ -36,48 +65,109 @@
 
         // --- Getters y Setters ---
 
+        /**
+         * Obtiene el nombre del personaje.
+         *
+         * @return El nombre del personaje.
+         */
         public String getNombre() {
             return nombre;
         }
 
+        /**
+         * Establece el nombre del personaje.
+         *
+         * @param nombre Nuevo nombre del personaje.
+         */
         public void setNombre(String nombre) {
             this.nombre = nombre;
         }
 
+        /**
+         * Obtiene el nivel del personaje.
+         *
+         * @return El nivel del personaje.
+         */
         public int getNivel() {
             return nivel;
         }
 
+        /**
+         * Establece el nivel del personaje.
+         * Limita el nivel entre 1 y 80.
+         * Recalcula la experiencia necesaria para el siguiente nivel.
+         *
+         * @param nivel Nuevo nivel del personaje.
+         */
         public void setNivel(int nivel) {
             this.nivel = Math.max(1, Math.min(80, nivel));
             this.experienciaNecesaria = this.nivel * 100;
         }
 
+        /**
+         * Obtiene los puntos de vida actuales.
+         *
+         * @return Puntos de vida actuales.
+         */
         public double getPuntosVida() {
             return puntosVida;
         }
 
+        /**
+         * Establece los puntos de vida actuales.
+         * Limita los puntos de vida entre 0 y el máximo.
+         *
+         * @param puntosVida Nuevos puntos de vida.
+         */
         public void setPuntosVida(double puntosVida) {
             this.puntosVida = Math.max(0, Math.min(puntosVidaMax, puntosVida));
         }
 
+        /**
+         * Obtiene los puntos de vida máximos.
+         *
+         * @return Puntos de vida máximos.
+         */
         public double getPuntosVidaMax() {
             return puntosVidaMax;
         }
 
+        /**
+         * Establece los puntos de vida máximos.
+         * Limita los puntos de vida máximos entre 1 y 10,000.
+         * Si los puntos de vida actuales superan el nuevo máximo, se ajustan.
+         *
+         * @param puntosVidaMax Nuevos puntos de vida máximos.
+         */
         public void setPuntosVidaMax(double puntosVidaMax) {
             this.puntosVidaMax = Math.max(1, Math.min(10000, puntosVidaMax));
             if (this.puntosVida > this.puntosVidaMax) this.puntosVida = this.puntosVidaMax;
         }
 
+        /**
+         * Obtiene los puntos de defensa.
+         *
+         * @return Puntos de defensa.
+         */
         public int getDefensa() {
             return defensa;
         }
 
+        /**
+         * Establece los puntos de defensa.
+         * Limita los puntos de defensa entre 0 y 1,000.
+         *
+         * @param defensa Nuevos puntos de defensa.
+         */
         public void setDefensa(int defensa) {
             this.defensa = defensa;
         }
 
+        /**
+         * Obtiene la experiencia acumulada.
+         *
+         * @return Experiencia acumulada.
+         */
         public int getExperiencia() {
             return experiencia;
         }
@@ -168,10 +258,17 @@
             System.out.println(nombre + " guardó " + item.getNombre() + ".");
         }
 
+        /**
+         * Usa un objeto del inventario en la posición indicada.
+         * @param indice Posición del objeto en el inventario.
+         */
         public void usarObjetoDeMochila(int indice) {
             this.inventario.usarYConsumir(indice, this);
         }
 
+        /**
+         * Muestra el contenido del inventario por consola.
+         */
         public void mostrarInventario() {
             inventario.mostrarContenido();
         }
